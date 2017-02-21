@@ -12,5 +12,10 @@
   "devDependencies": {
     "babel-cli": "^6.23.0",
     "babel-preset-es2015": "^6.22.0"
+  },
+  "dependencies": {
+    "bluebird": "^3.4.7",
+    "superagent": "^3.4.4",
+    "superagent-promise": "^1.1.0"
   }
 }
