@@ -7,7 +7,7 @@
   "author": "Marcelo Camargo <marcelocamargo@linuxmail.org>",
   "license": "MIT",
   "scripts": {
-    "compile": "babel ./src -d ./dist --source-maps"
+    "compile": "tsc"
   },
   "devDependencies": {
     "typescript": "2.1.6"

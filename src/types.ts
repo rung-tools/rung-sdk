@@ -1,0 +1,17 @@
+export const Integer = { type: 'Integer' };
+export const Double = { type: 'Double' };
+export const Date = { type: 'Date' };
+export const DateTime = { type: 'DateTime' };
+export const Natural = { type: 'Natural' };
+export const Char = (length: number) => ({ type: 'Char', length });
+export const IntegerRange = (from: number, to: number) => ({ type: 'IntegerRange', from, to });
+export const DoubleRange = (from: number, to: number) => ({ type: 'DoubleRange', from, to });
+export const Money = { type: 'Money' };
+export const String = { type: 'String' };
+export const Color = { type: 'Color' };
+export const Email = { type: 'Email' };
+export const Checkbox = { type: 'Checkbox' };
+export const Password = { type: 'Password' };
+export const OneOf = (values: string[]) => ({ type: 'AnyOf', values });
+export const MultipleOf = (values: string[]) => ({ type: 'MultipleOf', values });
+export const Url = { type: 'Url' };
