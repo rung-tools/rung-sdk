@@ -24,5 +24,5 @@ const params = {
     }
 };
 
-module.exports = create(main, params);
+module.exports = create(main, { params });
 ```
