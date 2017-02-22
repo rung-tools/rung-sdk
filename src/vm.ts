@@ -3,18 +3,26 @@ import * as readline from 'readline';
 import * as Bluebird from 'bluebird';
 import 'colors';
 
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
+declare module './vm' {
+    export function run(self: any): any;
+}
 
-const getLine = Bluebird.promisify((text, callback) => {
-    rl.question(text, callback.bind(null, null));
-});
+function run(self) {
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    });
 
-const putStrLn = Bluebird.promisify((text, callback) => {
-    rl.write(text + '\n');
-    callback();
-});
+    const getLine = Bluebird.promisify((text, callback) => {
+        rl.question(text, callback.bind(null, null));
+    });
 
-putStrLn('Setting up virtual machine...'.blue);
+    const putStrLn = Bluebird.promisify((text, callback) => {
+        rl.write(text + '\n');
+        callback();
+    });
+
+    console.log(self);
+}
+
+exports.run = run;

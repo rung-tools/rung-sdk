@@ -1,3 +1,5 @@
+import { run } from './vm';
+
 interface Context {
     params: { [name: string]: { value: any } },
     rung: {
@@ -20,5 +22,5 @@ export function create(extension: (ctx?: Context) => any, config?: Config) {
         throw new Error('Expected extension to be a function');
     }
 
-    return { extension, config };
+    return { extension, config, run };
 }
