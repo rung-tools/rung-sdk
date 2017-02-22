@@ -13,5 +13,8 @@
   "devDependencies": {
     "typescript": "2.1.6"
   },
-  "dependencies": {}
+  "dependencies": {
+    "bluebird": "^3.4.7",
+    "colors": "^1.1.2"
+  }
 }
