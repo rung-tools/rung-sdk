@@ -1,8 +1,8 @@
 {
   "name": "rung-sdk",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Rung Software Development Kit",
-  "main": "./dist",
+  "main": "./dist/index.js",
   "repository": "https://github.com/haskellcamargo/rung-sdk.git",
   "author": "Marcelo Camargo <marcelocamargo@linuxmail.org>",
   "license": "MIT",
