@@ -10,7 +10,7 @@ interface Config {
         [name: string]: {
             default?: any,
             description?: string | { [lang: string]: string },
-            type?: number
+            type?: { type: String }
         }
     }
 }
