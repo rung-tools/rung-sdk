@@ -7,7 +7,8 @@
   "author": "Marcelo Camargo <marcelocamargo@linuxmail.org>",
   "license": "MIT",
   "scripts": {
-    "compile": "tsc"
+    "compile": "tsc",
+    "prepublish": "npm run compile"
   },
   "devDependencies": {
     "typescript": "2.1.6"
