@@ -1,6 +1,6 @@
 /// <reference path="../typings/index.d.ts"; />
 import * as readline from 'readline';
-import { promisify, reject, resolve } from 'bluebird';
+import { promisify } from 'bluebird';
 import { cond, head, keys, mergeAll, T, tail } from 'ramda';
 import 'colors';
 import { getTypeName } from './types';
@@ -8,10 +8,6 @@ import { getTypeName } from './types';
 declare module './vm' {
     export function run(extension: (ctx?: Context) => any, config?: Config): void;
 }
-
-const convertType: (input: string) => (type: Type) => Promise<any> = input => cond([
-    [T, resolve(input)]
-]);
 
 function run(extension: (ctx?: Context) => any, config?: Config): void {
     const rl = readline.createInterface({

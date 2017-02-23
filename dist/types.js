@@ -15,7 +15,6 @@ exports.Email = { type: 'Email' };
 exports.Checkbox = { type: 'Checkbox' };
 exports.Password = { type: 'Password' };
 exports.OneOf = (values) => ({ type: 'OneOf', values });
-exports.MultipleOf = (values) => ({ type: 'MultipleOf', values });
 exports.Url = { type: 'Url' };
 exports.getTypeName = ramda_1.cond([
     [ramda_1.propEq('type', 'Char'), t => `Char(${t.length})`],
