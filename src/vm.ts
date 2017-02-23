@@ -3,7 +3,7 @@ import * as readline from 'readline';
 import { promisify } from 'bluebird';
 import { cond, head, keys, mergeAll, T, tail } from 'ramda';
 import 'colors';
-import { getTypeName } from './types';
+import { getTypeName, convertType } from './types';
 
 declare module './vm' {
     export function run(extension: (ctx?: Context) => any, config?: Config): void;
@@ -24,13 +24,21 @@ function run(extension: (ctx?: Context) => any, config?: Config): void {
     function askQuestions(remaining, answered, callback) {
         if (remaining.length) {
             const current = head(remaining);
-            const { description, type } = config.params[current];
+            const { description, type, default: def } = config.params[current];
             const typeName = getTypeName(<Type>type);
             getLine(`(${typeName.red}) ${(<string>description).blue}`)
                 .then(answer => {
+                    const literalValue = convertType(answer, <Type>type, def);
+
+                    if (literalValue === null) {
+                        askQuestions(remaining, answered, callback);
+                        return;
+                    }
+
                     askQuestions(tail(remaining), answered.concat([{
-                        [current]: answer
-                    }]), callback); });
+                        [current]: literalValue
+                    }]), callback);
+                });
         } else {
             callback(answered);
         }
