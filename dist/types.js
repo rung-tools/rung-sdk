@@ -1,4 +1,5 @@
 "use strict";
+const ramda_1 = require("ramda");
 exports.Integer = { type: 'Integer' };
 exports.Double = { type: 'Double' };
 exports.Date = { type: 'Date' };
@@ -13,6 +14,13 @@ exports.Color = { type: 'Color' };
 exports.Email = { type: 'Email' };
 exports.Checkbox = { type: 'Checkbox' };
 exports.Password = { type: 'Password' };
-exports.OneOf = (values) => ({ type: 'AnyOf', values });
+exports.OneOf = (values) => ({ type: 'OneOf', values });
 exports.MultipleOf = (values) => ({ type: 'MultipleOf', values });
 exports.Url = { type: 'Url' };
+exports.getTypeName = ramda_1.cond([
+    [ramda_1.propEq('type', 'Char'), t => `Char(${t.length})`],
+    [ramda_1.propEq('type', 'IntegerRange'), t => `IntegerRange(${t.from}, ${t.to})`],
+    [ramda_1.propEq('type', 'DoubleRange'), t => `DoubleRange(${t.from}, ${t.to})`],
+    [ramda_1.propEq('type', 'OneOf'), t => `OneOf([${t.values.join(', ')}])`],
+    [ramda_1.T, ramda_1.prop('type')]
+]);

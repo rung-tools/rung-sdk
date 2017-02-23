@@ -14,3 +14,7 @@ interface Config {
         }
     }
 }
+
+interface Type {
+    type: string;
+}

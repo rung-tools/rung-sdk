@@ -4,4 +4,5 @@ declare module 'colors' {
 
 declare interface String {
     blue: string;
+    red: string;
 }
