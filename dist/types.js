@@ -66,4 +66,4 @@ const valueOrNothing = {
     OneOf: (input, { values }) => ramda_1.contains(input, values) ? data_maybe_1.Just(input) : data_maybe_1.Nothing(),
     Url: input => validator_1.isURL(input) ? data_maybe_1.Just(input) : data_maybe_1.Nothing()
 };
-exports.convertType = (input, type) => valueOrNothing[type.type](input, type).getOrElse(null);
+exports.convertType = (input, type, def = null) => valueOrNothing[type.type](input, type).getOrElse(def);

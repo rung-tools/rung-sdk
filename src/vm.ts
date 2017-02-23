@@ -24,11 +24,11 @@ function run(extension: (ctx?: Context) => any, config?: Config): void {
     function askQuestions(remaining, answered, callback) {
         if (remaining.length) {
             const current = head(remaining);
-            const { description, type } = config.params[current];
+            const { description, type, default: def } = config.params[current];
             const typeName = getTypeName(<Type>type);
             getLine(`(${typeName.red}) ${(<string>description).blue}`)
                 .then(answer => {
-                    const literalValue = convertType(answer, <Type>type);
+                    const literalValue = convertType(answer, <Type>type, def);
 
                     if (literalValue === null) {
                         askQuestions(remaining, answered, callback);
@@ -49,7 +49,6 @@ function run(extension: (ctx?: Context) => any, config?: Config): void {
 
     ask(keys(config.params))
         .then(results => {
-            console.log(results);
             const context = <Context>{ params: mergeAll(results) };
             const output = extension(context);
             console.log(output); })

@@ -12,7 +12,7 @@ import {
     take,
     tryCatch
 } from 'ramda';
-import { Just, Nothing } from 'data.maybe';
+import { Just, Nothing, fromNullable } from 'data.maybe';
 import { isEmail, isHexColor, isURL } from 'validator';
 
 export const Integer = { type: 'Integer' };
@@ -82,5 +82,5 @@ const valueOrNothing = {
     Url: input => isURL(input) ? Just(input) : Nothing()
 };
 
-export const convertType: (input: string, type: Type) => any = (input, type) =>
-    valueOrNothing[type.type](input, type).getOrElse(null);
+export const convertType: (input: string, type: Type, def: any) => any = (input, type, def = null) =>
+    valueOrNothing[type.type](input, type).getOrElse(def);
