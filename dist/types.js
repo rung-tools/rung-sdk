@@ -1,6 +1,7 @@
 "use strict";
 const ramda_1 = require("ramda");
 const data_maybe_1 = require("data.maybe");
+const validator_1 = require("validator");
 exports.Integer = { type: 'Integer' };
 exports.Double = { type: 'Double' };
 exports.DateTime = { type: 'DateTime' };
@@ -13,7 +14,6 @@ exports.String = { type: 'String' };
 exports.Color = { type: 'Color' };
 exports.Email = { type: 'Email' };
 exports.Checkbox = { type: 'Checkbox' };
-exports.Password = { type: 'Password' };
 exports.OneOf = (values) => ({ type: 'OneOf', values });
 exports.Url = { type: 'Url' };
 exports.getTypeName = ramda_1.cond([
@@ -56,18 +56,14 @@ const valueOrNothing = {
         const money = parseFloat(ramda_1.replace(',', '.', input));
         return isNaN(money) ? data_maybe_1.Nothing() : data_maybe_1.Just(money);
     },
-    Color: input => {
-        return /^#[a-f0-9]{3}$/.test(input)
-            || /^#[a-f0-9]{6}$/.test(input) ? data_maybe_1.Just(input) : data_maybe_1.Nothing();
+    String: data_maybe_1.Just,
+    Color: input => validator_1.isHexColor(input) ? data_maybe_1.Just(input) : data_maybe_1.Nothing(),
+    Email: input => validator_1.isEmail(input) ? data_maybe_1.Just(input) : data_maybe_1.Nothing(),
+    Checkbox: input => {
+        const lowerCaseInput = input.toLowerCase();
+        return ramda_1.contains(lowerCaseInput, ['y', 'n']) ? data_maybe_1.Just(lowerCaseInput === 'y') : data_maybe_1.Nothing();
     },
-    String: data_maybe_1.Just
+    OneOf: (input, { values }) => ramda_1.contains(input, values) ? data_maybe_1.Just(input) : data_maybe_1.Nothing(),
+    Url: input => validator_1.isURL(input) ? data_maybe_1.Just(input) : data_maybe_1.Nothing()
 };
 exports.convertType = (input, type) => valueOrNothing[type.type](input, type).getOrElse(null);
-/**
-export const Color = { type: 'Color' };
-export const Email = { type: 'Email' };
-export const Checkbox = { type: 'Checkbox' };
-export const Password = { type: 'Password' };
-export const OneOf = (values: string[]) => ({ type: 'OneOf', values });
-export const Url = { type: 'Url' };
- */ 

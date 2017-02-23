@@ -17,6 +17,7 @@
     "bluebird": "^3.4.7",
     "colors": "^1.1.2",
     "data.maybe": "^1.2.2",
-    "ramda": "^0.23.0"
+    "ramda": "^0.23.0",
+    "validator": "^6.2.1"
   }
 }

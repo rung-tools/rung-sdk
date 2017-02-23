@@ -13,6 +13,7 @@ import {
     tryCatch
 } from 'ramda';
 import { Just, Nothing } from 'data.maybe';
+import { isEmail, isHexColor, isURL } from 'validator';
 
 export const Integer = { type: 'Integer' };
 export const Double = { type: 'Double' };
@@ -26,7 +27,6 @@ export const String = { type: 'String' };
 export const Color = { type: 'Color' };
 export const Email = { type: 'Email' };
 export const Checkbox = { type: 'Checkbox' };
-export const Password = { type: 'Password' };
 export const OneOf = (values: string[]) => ({ type: 'OneOf', values });
 export const Url = { type: 'Url' };
 
@@ -71,21 +71,16 @@ const valueOrNothing = {
         const money = parseFloat(replace(',', '.', input));
         return isNaN(money) ? Nothing() : Just(money);
     },
-    Color: input => {
-        return /^#[a-f0-9]{3}$/.test(input)
-            || /^#[a-f0-9]{6}$/.test(input) ? Just(input) : Nothing();
+    String: Just,
+    Color: input => isHexColor(input) ? Just(input) : Nothing(),
+    Email: input => isEmail(input) ? Just(input) : Nothing(),
+    Checkbox: input => {
+        const lowerCaseInput = input.toLowerCase();
+        return contains(lowerCaseInput, ['y', 'n']) ? Just(lowerCaseInput === 'y') : Nothing();
     },
-    String: Just
+    OneOf: (input, { values }) => contains(input, values) ? Just(input) : Nothing(),
+    Url: input => isURL(input) ? Just(input) : Nothing()
 };
 
 export const convertType: (input: string, type: Type) => any = (input, type) =>
     valueOrNothing[type.type](input, type).getOrElse(null);
-
-
-/**
-export const Email = { type: 'Email' };
-export const Checkbox = { type: 'Checkbox' };
-export const Password = { type: 'Password' };
-export const OneOf = (values: string[]) => ({ type: 'OneOf', values });
-export const Url = { type: 'Url' };
- */
