@@ -9,7 +9,7 @@ declare module './vm' {
     export function run(extension: (ctx?: Context) => any, config?: Config): void;
 }
 
-function run(extension: (ctx?: Context) => any, config?: Config): void {
+function run(extension: (ctx?: Context, callback?: Function) => any, config?: Config): void {
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout });
@@ -50,8 +50,17 @@ function run(extension: (ctx?: Context) => any, config?: Config): void {
     ask(keys(config.params))
         .then(results => {
             const context = <Context>{ params: mergeAll(results) };
-            const output = extension(context);
-            console.log(output); })
+
+            if (extension.length > 1) {
+                // Got async computation
+                extension(context, output => {
+                    console.log(output);
+                });
+            } else {
+                const output = extension(context);
+                console.log(output);
+            }
+        })
         .then(rl.close.bind(rl));
 }
 
