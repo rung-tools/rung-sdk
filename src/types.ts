@@ -1,4 +1,5 @@
 import {
+    T,
     compose,
     cond,
     contains,
@@ -7,7 +8,8 @@ import {
     pipe,
     prop,
     propEq,
-    T,
+    replace,
+    take,
     tryCatch
 } from 'ramda';
 import { Just, Nothing } from 'data.maybe';
@@ -54,8 +56,36 @@ const valueOrNothing = {
         const intValue = parseInt(input);
         return isNaN(intValue) || intValue < 0 ? Nothing() : Just(intValue);
     },
+    Char: (input, { length }) => {
+        return Just(take(length, input));
+    },
+    IntegerRange: (input, { from, to }) => {
+        const intValue = parseInt(input);
+        return isNaN(intValue) || intValue < from || intValue > to ? Nothing() : Just(intValue);
+    },
+    DoubleRange: (input, { from, to }) => {
+        const doubleValue = parseFloat(input);
+        return isNaN(doubleValue) || doubleValue < from || doubleValue > to ? Nothing() : Just(doubleValue);
+    },
+    Money: input => {
+        const money = parseFloat(replace(',', '.', input));
+        return isNaN(money) ? Nothing() : Just(money);
+    },
+    Color: input => {
+        return /^#[a-f0-9]{3}$/.test(input)
+            || /^#[a-f0-9]{6}$/.test(input) ? Just(input) : Nothing();
+    },
     String: Just
 };
 
 export const convertType: (input: string, type: Type) => any = (input, type) =>
     valueOrNothing[type.type](input, type).getOrElse(null);
+
+
+/**
+export const Email = { type: 'Email' };
+export const Checkbox = { type: 'Checkbox' };
+export const Password = { type: 'Password' };
+export const OneOf = (values: string[]) => ({ type: 'OneOf', values });
+export const Url = { type: 'Url' };
+ */

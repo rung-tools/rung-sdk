@@ -1,5 +1,5 @@
 const { create, run } = require('../dist');
-const { String: Text, Natural } = require('../dist/types');
+const { String: Text, Color } = require('../dist/types');
 const path = require('path');
 
 function main(context) {
@@ -16,7 +16,7 @@ const params = {
     age: {
         default: 18,
         description: 'Age of the user',
-        type: Natural
+        type: Color
     }
 };
 
