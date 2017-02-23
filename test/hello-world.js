@@ -8,11 +8,11 @@ function main(context) {
 }
 
 const params = {
-    name: {
-        default: 'visitor',
-        description: 'Name of the user to greet',
-        type: Text
-    },
+    // name: {
+    //     default: 'visitor',
+    //     description: 'Name of the user to greet',
+    //     type: Text
+    // },
     age: {
         default: 18,
         description: 'Age of the user',

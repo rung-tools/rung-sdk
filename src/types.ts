@@ -1,8 +1,19 @@
-import { cond, contains, equals, identity, pipe, prop, propEq, T } from 'ramda';
+import {
+    compose,
+    cond,
+    contains,
+    equals,
+    identity,
+    pipe,
+    prop,
+    propEq,
+    T,
+    tryCatch
+} from 'ramda';
+import { Just, Nothing } from 'data.maybe';
 
 export const Integer = { type: 'Integer' };
 export const Double = { type: 'Double' };
-export const Date = { type: 'Date' };
 export const DateTime = { type: 'DateTime' };
 export const Natural = { type: 'Natural' };
 export const Char = (length: number) => ({ type: 'Char', length });
@@ -24,3 +35,27 @@ export const getTypeName: (type: Type) => string = cond([
     [propEq('type', 'OneOf'), t => `OneOf([${t.values.join(', ')}])`],
     [T, prop('type')]
 ]);
+
+// Type validators
+const valueOrNothing = {
+    Integer: input => {
+        const intValue = parseInt(input);
+        return isNaN(intValue) ? Nothing() : Just(intValue);
+    },
+    Double: input => {
+        const doubleValue = parseFloat(input);
+        return isNaN(doubleValue) ? Nothing() : Just(doubleValue);
+    },
+    DateTime: input => {
+        const date = new Date(input);
+        return isNaN(date.getMilliseconds()) ? Nothing() : Just(date);
+    },
+    Natural: input => {
+        const intValue = parseInt(input);
+        return isNaN(intValue) || intValue < 0 ? Nothing() : Just(intValue);
+    },
+    String: Just
+};
+
+export const convertType: (input: string, type: Type) => any = (input, type) =>
+    valueOrNothing[type.type](input, type).getOrElse(null);
