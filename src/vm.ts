@@ -23,19 +23,15 @@ function run(extension: (ctx?: Context, callback?: Function) => any, config?: Co
         if (remaining.length) {
             const [head, ...tail] = remaining;
             const { description, type, default: def } = config.params[head];
-            const typeName = getTypeName(<Type>type);
-            getLine(`(${typeName.red}) ${(<string>description).blue}`)
-                .then(answer => {
+            getLine(`(${getTypeName(<Type>type).red}) ${(<string>description).blue}`)
+                .done(answer => {
                     const literalValue = convertType(answer, <Type>type, def);
 
                     if (literalValue === null) {
                         askQuestions(remaining, answered, callback);
-                        return;
+                    } else {
+                        askQuestions(tail, answered.concat([{ [head]: literalValue }]), callback);
                     }
-
-                    askQuestions(tail, answered.concat([{
-                        [head]: literalValue
-                    }]), callback);
                 });
         } else {
             callback(answered);
