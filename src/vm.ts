@@ -1,7 +1,7 @@
 /// <reference path="../typings/index.d.ts"; />
 import * as readline from 'readline';
 import { promisify } from 'bluebird';
-import { cond, head, keys, mergeAll, T, tail } from 'ramda';
+import { cond, keys, mergeAll, T } from 'ramda';
 import 'colors';
 import { getTypeName, convertType } from './types';
 
@@ -10,9 +10,7 @@ declare module './vm' {
 }
 
 function run(extension: (ctx?: Context, callback?: Function) => any, config?: Config): void {
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout });
+    const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
     const getLine = promisify((text, callback) => {
         rl.question(`${text}: `, callback.bind(null, null)); });
@@ -23,21 +21,17 @@ function run(extension: (ctx?: Context, callback?: Function) => any, config?: Co
 
     function askQuestions(remaining, answered, callback) {
         if (remaining.length) {
-            const current = head(remaining);
-            const { description, type, default: def } = config.params[current];
-            const typeName = getTypeName(<Type>type);
-            getLine(`(${typeName.red}) ${(<string>description).blue}`)
-                .then(answer => {
+            const [head, ...tail] = remaining;
+            const { description, type, default: def } = config.params[head];
+            getLine(`(${getTypeName(<Type>type).red}) ${(<string>description).blue}`)
+                .done(answer => {
                     const literalValue = convertType(answer, <Type>type, def);
 
                     if (literalValue === null) {
                         askQuestions(remaining, answered, callback);
-                        return;
+                    } else {
+                        askQuestions(tail, answered.concat([{ [head]: literalValue }]), callback);
                     }
-
-                    askQuestions(tail(remaining), answered.concat([{
-                        [current]: literalValue
-                    }]), callback);
                 });
         } else {
             callback(answered);
