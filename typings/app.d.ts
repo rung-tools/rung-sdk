@@ -10,11 +10,11 @@ interface Config {
         [name: string]: {
             default?: any,
             description?: string | { [lang: string]: string },
-            type?: { type: String }
+            type?: Type
         }
     }
 }
 
 interface Type {
-    type: string;
+    name: string;
 }

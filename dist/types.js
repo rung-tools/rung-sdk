@@ -2,26 +2,26 @@
 const ramda_1 = require("ramda");
 const data_maybe_1 = require("data.maybe");
 const validator_1 = require("validator");
-exports.Integer = { type: 'Integer' };
-exports.Double = { type: 'Double' };
-exports.DateTime = { type: 'DateTime' };
-exports.Natural = { type: 'Natural' };
-exports.Char = (length) => ({ type: 'Char', length });
-exports.IntegerRange = (from, to) => ({ type: 'IntegerRange', from, to });
-exports.DoubleRange = (from, to) => ({ type: 'DoubleRange', from, to });
-exports.Money = { type: 'Money' };
-exports.String = { type: 'String' };
-exports.Color = { type: 'Color' };
-exports.Email = { type: 'Email' };
-exports.Checkbox = { type: 'Checkbox' };
-exports.OneOf = (values) => ({ type: 'OneOf', values });
-exports.Url = { type: 'Url' };
+exports.Integer = { name: 'Integer' };
+exports.Double = { name: 'Double' };
+exports.DateTime = { name: 'DateTime' };
+exports.Natural = { name: 'Natural' };
+exports.Char = (length) => ({ name: 'Char', length });
+exports.IntegerRange = (from, to) => ({ name: 'IntegerRange', from, to });
+exports.DoubleRange = (from, to) => ({ name: 'DoubleRange', from, to });
+exports.Money = { name: 'Money' };
+exports.String = { name: 'String' };
+exports.Color = { name: 'Color' };
+exports.Email = { name: 'Email' };
+exports.Checkbox = { name: 'Checkbox' };
+exports.OneOf = (values) => ({ name: 'OneOf', values });
+exports.Url = { name: 'Url' };
 exports.getTypeName = ramda_1.cond([
-    [ramda_1.propEq('type', 'Char'), t => `Char(${t.length})`],
-    [ramda_1.propEq('type', 'IntegerRange'), t => `IntegerRange(${t.from}, ${t.to})`],
-    [ramda_1.propEq('type', 'DoubleRange'), t => `DoubleRange(${t.from}, ${t.to})`],
-    [ramda_1.propEq('type', 'OneOf'), t => `OneOf([${t.values.join(', ')}])`],
-    [ramda_1.T, ramda_1.prop('type')]
+    [ramda_1.propEq('name', 'Char'), t => `Char(${t.length})`],
+    [ramda_1.propEq('name', 'IntegerRange'), t => `IntegerRange(${t.from}, ${t.to})`],
+    [ramda_1.propEq('name', 'DoubleRange'), t => `DoubleRange(${t.from}, ${t.to})`],
+    [ramda_1.propEq('name', 'OneOf'), t => `OneOf([${t.values.join(', ')}])`],
+    [ramda_1.T, ramda_1.prop('name')]
 ]);
 // Type validators
 const valueOrNothing = {
@@ -66,4 +66,4 @@ const valueOrNothing = {
     OneOf: (input, { values }) => ramda_1.contains(input, values) ? data_maybe_1.Just(input) : data_maybe_1.Nothing(),
     Url: input => validator_1.isURL(input) ? data_maybe_1.Just(input) : data_maybe_1.Nothing()
 };
-exports.convertType = (input, type, def = null) => valueOrNothing[type.type](input, type).getOrElse(def);
+exports.convertType = (input, type, def = null) => valueOrNothing[type.name](input, type).getOrElse(def);
