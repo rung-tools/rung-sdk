@@ -1,6 +1,6 @@
 {
   "name": "rung-sdk",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Rung Software Development Kit",
   "main": "./dist/index.js",
   "repository": "https://github.com/rung-tools/rung-sdk.git",
