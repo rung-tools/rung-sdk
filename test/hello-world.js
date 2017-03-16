@@ -21,6 +21,5 @@ const params = {
 };
 
 const app = create(main, { params });
-app.run();
 
 module.exports = app;
