@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "compile": "tsc",
-    "prepublish": "yarn compile"
+    "prepublish": "npm run compile"
   },
   "devDependencies": {
     "typescript": "2.1.6"
